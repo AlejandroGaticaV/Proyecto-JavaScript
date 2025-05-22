@@ -19,6 +19,16 @@ document.getElementById("studentform").addEventListener("submit", function (e) {
     this.reset();
 });
 
+// Mostrar fecha actual
+function mostrarFecha() {
+    const fecha = new Date();
+    const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+    const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+    document.getElementById("currentDate").textContent = `Fecha: ${fechaFormateada}`;
+}
+
+mostrarFecha(); // Llamamos a la función para mostrar la fecha
+
 const tableBody = document.getElementById("studentTableBody");
 
 function addStudentToTable(student) {
@@ -43,3 +53,4 @@ function calcularPromedio() {
     const average = total / students.length;
     promDiv.innerHTML = `Promedio General del Curso: ${average.toFixed(2)}`;
 }
+
