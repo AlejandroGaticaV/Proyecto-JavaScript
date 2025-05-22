@@ -19,7 +19,6 @@ document.getElementById("studentform").addEventListener("submit", function (e) {
     this.reset();
 });
 
-// Mostrar fecha actual
 function mostrarFecha() {
     const fecha = new Date();
     const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -27,7 +26,7 @@ function mostrarFecha() {
     document.getElementById("currentDate").textContent = `Fecha: ${fechaFormateada}`;
 }
 
-mostrarFecha(); // Llamamos a la función para mostrar la fecha
+mostrarFecha();
 
 const tableBody = document.getElementById("studentTableBody");
 
