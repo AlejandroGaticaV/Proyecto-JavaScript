@@ -1,4 +1,5 @@
 const students = [];
+let editingIndex = -1;
 
 document.getElementById("studentform").addEventListener("submit", function (e) {
     e.preventDefault();
@@ -13,8 +14,16 @@ document.getElementById("studentform").addEventListener("submit", function (e) {
     }
 
     const student = { name, lastName, grade };
-    students.push(student);
-    addStudentToTable(student);
+
+    if (editingIndex >= 0) {
+        students[editingIndex] = student;
+        updateTable();
+        editingIndex = -1;
+    } else {
+        students.push(student);
+        addStudentToTable(student);
+    }
+
     calcularPromedio();
     this.reset();
 });
@@ -30,27 +39,44 @@ mostrarFecha();
 
 const tableBody = document.getElementById("studentTableBody");
 
-function addStudentToTable(student) {
+function addStudentToTable(student, index = students.length - 1) {
     const row = document.createElement("tr");
+
     row.innerHTML = `
-    <td>${student.name}</td>
-    <td>${student.lastName}</td>
-    <td>${student.grade}</td>
-    <td> <button class= "btn" > Eliminar </ button ></td>
-  `;
-    row.querySelector(".btn").addEventListener("click", function(){
-        borrarEstudiante(student, row);
-    })
+        <td>${student.name}</td>
+        <td>${student.lastName}</td>
+        <td>${student.grade}</td>
+        <td>
+                <button class="btn edit-btn">Editar</button>
+                <button class="btn delete-btn">Eliminar</button>
+        </td>
+    `;
+
+    row.querySelector(".delete-btn").addEventListener("click", function () {
+        borrarEstudiante(index);
+    });
+
+    row.querySelector(".edit-btn").addEventListener("click", function () {
+        document.getElementById("name").value = student.name;
+        document.getElementById("lastName").value = student.lastName;
+        document.getElementById("grade").value = student.grade;
+        editingIndex = index;
+    });
+
     tableBody.appendChild(row);
 }
 
-function borrarEstudiante(student, row){
-    const index = students.indexOf(student);
-    if(index > -1){
-        students.splice(index, 1);
-        row.remove();
-        calcularPromedio();
-    }  
+function borrarEstudiante(index) {
+    students.splice(index, 1);
+    updateTable();
+    calcularPromedio();
+}
+
+function updateTable() {
+    tableBody.innerHTML = "";
+    students.forEach((student, index) => {
+        addStudentToTable(student, index);
+    });
 }
 
 const promDiv = document.getElementById("average");
@@ -65,4 +91,3 @@ function calcularPromedio() {
     const average = total / students.length;
     promDiv.innerHTML = `Promedio General del Curso: ${average.toFixed(2)}`;
 }
-
