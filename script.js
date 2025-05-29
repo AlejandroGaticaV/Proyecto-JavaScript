@@ -84,10 +84,24 @@ const promDiv = document.getElementById("average");
 function calcularPromedio() {
     if (students.length === 0) {
         promDiv.innerHTML = "Promedio General del Curso: N/A";
-        return;
+    } else {
+        const total = students.reduce((acc, student) => acc + student.grade, 0);
+        const average = total / students.length;
+        promDiv.innerHTML = `Promedio General del Curso: ${average.toFixed(2)}`;
     }
 
-    const total = students.reduce((acc, student) => acc + student.grade, 0);
-    const average = total / students.length;
-    promDiv.innerHTML = `Promedio General del Curso: ${average.toFixed(2)}`;
+    actualizarEstadisticas();
+}
+
+function actualizarEstadisticas() {
+    const total = students.length;
+    const eximidos = students.filter(s => s.grade > 5.0).length;
+    const examen = students.filter(s => s.grade < 5.0).length;
+
+    const statsDiv = document.getElementById("stats");
+    statsDiv.innerHTML = `
+        <p>Total de estudiantes: ${total}</p>
+        <p>Estudiantes eximidos (nota > 5.0): ${eximidos}</p>
+        <p>Estudiantes que rinden examen (nota < 5.0): ${examen}</p>
+    `;
 }
