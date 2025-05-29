@@ -95,13 +95,13 @@ function calcularPromedio() {
 
 function actualizarEstadisticas() {
     const total = students.length;
-    const eximidos = students.filter(s => s.grade > 5.0).length;
+    const eximidos = students.filter(s => s.grade >= 5.0).length;
     const examen = students.filter(s => s.grade < 5.0).length;
 
     const statsDiv = document.getElementById("stats");
     statsDiv.innerHTML = `
         <p>Total de estudiantes: ${total}</p>
-        <p>Estudiantes eximidos (nota > 5.0): ${eximidos}</p>
+        <p>Estudiantes eximidos (nota >= 5.0): ${eximidos}</p>
         <p>Estudiantes que rinden examen (nota < 5.0): ${examen}</p>
     `;
 }
